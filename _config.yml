@@ -1,8 +1,8 @@
 title: alosafuzz
-tagline: ICS/OT protocol fuzzing and disclosure notes
+tagline: ICS/OT and network protocol fuzzing and disclosure notes
 description: >-
-  Independent ICS/OT security research by Shad Malloy (alosafuzz): protocol
-  fuzzing, vulnerability findings, and coordinated-disclosure notes.
+  Independent security research by Shad Malloy (alosafuzz) into ICS/OT and network
+  protocols: protocol fuzzing, vulnerability findings, and coordinated-disclosure notes.
 author:
   name: Shad Malloy (alosafuzz)
   email: alosafuzz@proton.me
