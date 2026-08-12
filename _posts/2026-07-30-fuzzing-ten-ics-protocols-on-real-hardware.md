@@ -165,7 +165,7 @@ more than any individual bug, is the useful part.
 | Target | Reported | Where | Status |
 |---|---|---|---|
 | **pymodbus** | Fixed FC / zero-TID exception | `pymodbus#2990` | Fixed same day (merged upstream, verified) |
-| **OpenPLC v4** | S7comm DoS, two Modbus bugs, OPC-UA gap | `openplc-runtime#153` | Reported; maintainer engagement pending |
+| **OpenPLC v4** | S7comm DoS, two Modbus bugs, OPC-UA gap | `openplc-runtime#153` | Reported; three CVE IDs pursued via MITRE (CANs filed) for the exhaustion DoS, pipelined-ADU hang, and role-elevation findings; maintainer engagement still pending |
 | **emelianov** | Three MBAP parsing hangs | `modbus-esp8266#387` | Public + PoC; three CVE IDs reserved (CANs filed), pending publication |
 | **snap7** | `count=0xFFFF` crash (CWE-787) | `SCADACS/snap7#16` | Public issue (dormant repo); pursuing a CVE via MITRE (CNA-of-last-resort) |
 | **Espressif** | Five Modbus DoS classes | Private bug-bounty | Vendor tested and respectfully declined as robustness, not vulnerabilities |
