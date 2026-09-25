@@ -58,7 +58,7 @@ Five of the eight didn't need any interpretation. They needed extraction:
 None of those five values appear in any Moxa manual we could find. They're not something we think
 a technician would ever see without pulling apart the firmware the way we did.
 
-The other three are a genuinely different shape, and we filed them that way from the start:
+The other three are a genuinely different issue, and we filed them that way from the start:
 
 - **EDR-series secure routers**: the closest of the eight to something you could call
   "documented" — the default (`moxa`, or a blank password depending on firmware generation) is
