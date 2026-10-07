@@ -17,7 +17,7 @@
     <a href="{{ '/projects/' | relative_url }}">Projects</a>
     <a href="{{ '/guides/' | relative_url }}">Protocol Guides</a>
     <a href="{{ '/writeups/' | relative_url }}">Writeups</a>
-    <a href="{{ '/advisories/' | relative_url }}">Advisories</a>
+    {% if site.advisories.size > 0 %}<a href="{{ '/advisories/' | relative_url }}">Advisories</a>{% endif %}
     <a href="{{ '/publications/' | relative_url }}">Publications</a>
     <a href="{{ '/about/' | relative_url }}">About</a>
   </nav>

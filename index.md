@@ -14,5 +14,5 @@ the writeups.</p>
   <li><a class="title" href="{{ '/projects/' | relative_url }}">Projects</a><div class="sub">The tools: icsFuzzer, icsScanner, and the sibling fuzzers.</div></li>
   <li><a class="title" href="{{ '/guides/' | relative_url }}">Protocol Guides</a><div class="sub">Research-focused field guides to ICS protocol wire formats and their fuzz surfaces.</div></li>
   <li><a class="title" href="{{ '/writeups/' | relative_url }}">Writeups</a><div class="sub">Narrative posts on methodology and findings.</div></li>
-  <li><a class="title" href="{{ '/advisories/' | relative_url }}">Advisories</a><div class="sub">Coordinated-disclosure and CVE pages.</div></li>
+  {% if site.advisories.size > 0 %}<li><a class="title" href="{{ '/advisories/' | relative_url }}">Advisories</a><div class="sub">Coordinated-disclosure and CVE pages.</div></li>{% endif %}
 </ul>
