@@ -3,7 +3,6 @@ title: hartFuzz
 slug: hartfuzz
 status: active
 order: 5
-repo: https://github.com/alosafuzz/hartFuzz
 summary: >-
   Coverage-guided fuzzing of HART-IP (FieldComm Group hipserver) — the native Ethernet transport for field instrumentation.
 ---

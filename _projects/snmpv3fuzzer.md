@@ -3,7 +3,6 @@ title: snmpv3Fuzzer
 slug: snmpv3fuzzer
 status: active
 order: 4
-repo: https://github.com/alosafuzz/snmpv3Fuzzer
 summary: >-
   Coverage-guided fuzzing of SNMPv3/USM in embedded stacks (lwIP), targeting the memory-unsafe surface net-snmp's OSS-Fuzz coverage leaves open.
 ---
