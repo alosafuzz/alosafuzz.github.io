@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<article>
+<h1>{{ page.title }}</h1>
+<p class="meta">
+  {% if page.vendor %}Vendor: {{ page.vendor | join: ", " }} · {% endif %}
+  {% if page.sector %}Sector: {{ page.sector | join: ", " }} · {% endif %}
+  {% if page.transport %}Transport: {{ page.transport | join: ", " }}{% endif %}
+  {% if page.project %} · Project: <a href="{{ '/projects/' | append: page.project | relative_url }}/">{{ page.project }}</a>{% endif %}
+</p>
+{{ content }}
+</article>

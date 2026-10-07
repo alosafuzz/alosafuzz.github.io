@@ -1,0 +1,9 @@
+---
+layout: default
+---
+<article>
+<h1>{{ page.title }}</h1>
+<p class="meta"><span class="badge ext">{{ page.host }}</span> {{ page.date | date: "%B %-d, %Y" }}</p>
+<p>{{ content }}</p>
+<p><a href="{{ page.url }}">Read on {{ page.host }} →</a></p>
+</article>

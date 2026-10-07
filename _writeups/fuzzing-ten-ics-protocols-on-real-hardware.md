@@ -1,7 +1,10 @@
 ---
-layout: post
 title: "Fuzzing ten ICS protocols on real hardware: a coverage map, the findings worth reading, and what happened when I reported them"
 date: 2026-07-30 12:00:00 -0600
+project: icsfuzzer
+redirect_from:
+  - /2026/07/30/fuzzing-ten-ics-protocols-on-real-hardware/
+  - /2026/07/30/fuzzing-ten-ics-protocols-on-real-hardware.html
 ---
 Point a protocol fuzzer at an industrial device and it will happily report hundreds of
 crashes. Most of that number tells you more about your test harness than about the device,

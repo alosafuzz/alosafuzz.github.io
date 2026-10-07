@@ -1,7 +1,10 @@
 ---
-layout: post
 title: "Eight hardcoded credentials, one vendor response: a Moxa disclosure story"
 date: 2026-09-24 08:00:00 -0600
+project: icsscanner
+redirect_from:
+  - /2026/09/24/eight-hardcoded-credentials-one-vendor-response/
+  - /2026/09/24/eight-hardcoded-credentials-one-vendor-response.html
 ---
 Over several ingest passes this month, where firmware images would be manually downloaded and
 then analyzed in depth, Zoe and I found eight distinct hardcoded or missing-authentication issues

@@ -1,18 +1,39 @@
 title: alosafuzz
-tagline: ICS/OT and network protocol fuzzing and disclosure notes
-description: >-
-  Independent security research by Shad Malloy (alosafuzz) into ICS/OT and network
-  protocols: protocol fuzzing, vulnerability findings, and coordinated-disclosure notes.
+tagline: "ICS/OT protocol security research — fuzzing, scanning, and coordinated disclosure."
+description: "Independent ICS/OT security research by Shad Malloy (alosafuzz): protocol fuzzers, a safety-first scanner, reverse-engineered protocol guides, and coordinated vulnerability disclosure."
 author:
-  name: Shad Malloy (alosafuzz)
+  name: "Shad Malloy (alosafuzz)"
   email: alosafuzz@proton.me
 github_username: alosafuzz
-theme: minima
-minima:
-  skin: auto
-show_excerpts: true
+url: "https://alosafuzz.github.io"
+baseurl: ""
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+collections:
+  projects:     { output: true, permalink: /projects/:name/ }
+  guides:       { output: true, permalink: /guides/:name/ }
+  writeups:     { output: true, permalink: /writeups/:name/ }
+  advisories:   { output: true, permalink: /advisories/:name/ }
+  publications: { output: true, permalink: /publications/:name/ }
+
+defaults:
+  - scope: { path: "", type: projects }
+    values: { layout: project }
+  - scope: { path: "", type: guides }
+    values: { layout: guide }
+  - scope: { path: "", type: writeups }
+    values: { layout: writeup }
+  - scope: { path: "", type: advisories }
+    values: { layout: advisory }
+  - scope: { path: "", type: publications }
+    values: { layout: publication }
+
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
-header_pages:
-  - about.md
+  - jekyll-redirect-from
+
+exclude: [ Gemfile, Gemfile.lock, README.md, vendor, .jekyll-cache, docs ]

@@ -1,0 +1,18 @@
+---
+layout: default
+---
+<article>
+<h1>{{ page.title }}</h1>
+<p class="meta">Status: {{ page.status }}{% if page.repo %} · <a href="{{ page.repo }}">{{ page.repo }}</a>{% endif %}</p>
+{{ content }}
+
+{% assign g = site.guides | where_exp: "i", "i.project == page.slug" %}
+{% if g.size > 0 %}<h2>Protocol guides</h2><ul class="cards">
+{% for i in g %}<li><a class="title" href="{{ i.url | relative_url }}">{{ i.title }}</a></li>{% endfor %}
+</ul>{% endif %}
+
+{% assign pubs = site.publications | where_exp: "i", "i.project == page.slug" %}
+{% if pubs.size > 0 %}<h2>Related external work</h2><ul class="cards">
+{% for i in pubs %}<li><a class="title" href="{{ i.url }}">{{ i.title }}</a> <span class="badge ext">{{ i.host }}</span></li>{% endfor %}
+</ul>{% endif %}
+</article>

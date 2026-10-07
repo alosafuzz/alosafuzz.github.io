@@ -1,15 +1,16 @@
 ---
-layout: page
+layout: default
 title: About
 permalink: /about/
 ---
+# About
+<p class="lead">Independent ICS/OT security researcher. I build protocol fuzzers and
+a safety-first scanner, reverse-engineer industrial wire formats, and disclose
+findings through coordinated channels.</p>
 
-I'm **Shad Malloy** (**alosafuzz**), an independent security researcher focused on
-industrial control systems, operational technology, and network protocol security — protocol
-fuzzing, vulnerability research, and coordinated disclosure.
+Byline: **Shad Malloy (alosafuzz)**. Code: [github.com/alosafuzz](https://github.com/alosafuzz).
 
-Tooling: [icsFuzzer](https://github.com/alosafuzz/icsFuzzer), an open-source fuzzer for ten
-ICS/OT protocols, and [timeFuzzer](https://github.com/alosafuzz/timeFuzzer), coverage-guided
-fuzz harnesses for PTP, gPTP, and NTS.
-
-Contact: alosafuzz@proton.me
+## Coordinated disclosure
+I report findings to the affected vendor or maintainer first and follow their
+disclosure timeline before publishing technical detail. Advisories on this site are
+TLP-marked. For sensitive reports, request a secure channel first.

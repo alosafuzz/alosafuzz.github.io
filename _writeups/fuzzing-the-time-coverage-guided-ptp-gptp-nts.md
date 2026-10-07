@@ -1,7 +1,10 @@
 ---
-layout: post
 title: "Fuzzing the time: coverage-guided testing of PTP, gPTP, and NTS across four implementations"
 date: 2026-08-09 08:00:00 -0600
+project: timefuzzer
+redirect_from:
+  - /2026/08/09/fuzzing-the-time-coverage-guided-ptp-gptp-nts/
+  - /2026/08/09/fuzzing-the-time-coverage-guided-ptp-gptp-nts.html
 ---
 Almost everything that has to agree on *when* leans on a small set of network time protocols. NTP is
 the famous one, and it has been fuzzed to death — Project Zero's AFL campaign, AmpFuzz, and continuous

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cybersecurity Advisory for SOEM (RRTL-260921-1)</title>
+<style>
+:root {
+  --bg:       #ffffff; --fg:       #1a1a1a; --bg-alt:  #f6f6f6;
+  --border:   #d4d4d4; --accent:   #0057b8; --muted:   #595959;
+  --code-bg:  #efefef; --th-bg:    #ececec;
+  --tlp-red:  #b00; --tlp-red-fg: #fff;
+  --tlp-amber:#b85c00; --tlp-amber-fg:#fff;
+  --tlp-green:#2a6e2a; --tlp-green-fg:#fff;
+  --tlp-white:#444;    --tlp-white-fg:#fff;
+  --tlp-clear:#444;    --tlp-clear-fg:#fff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:      #191919; --fg:      #e2e2e2; --bg-alt: #222222;
+    --border:  #3c3c3c; --accent:  #5aabff; --muted:  #999999;
+    --code-bg: #272727; --th-bg:   #2a2a2a;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; padding: 2rem 1rem;
+  background: var(--bg); color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem; line-height: 1.6;
+}
+article { max-width: 900px; margin: 0 auto; }
+h1 { font-size: 1.6rem; margin: 0 0 0.75rem; line-height: 1.3; }
+h2 { font-size: 1.2rem; margin: 2rem 0 0.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; }
+h3 { font-size: 1.05rem; margin: 1.5rem 0 0.4rem; }
+h4 { font-size: 0.95rem; margin: 1rem 0 0.3rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+a { color: var(--accent); }
+code {
+  font-family: 'SF Mono', 'Cascadia Code', Consolas, 'Liberation Mono', monospace;
+  font-size: 0.875em; background: var(--code-bg); padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+.tlp {
+  display: inline-block; font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.06em; padding: 0.2em 0.6em; border-radius: 3px;
+  margin-bottom: 0.75rem;
+}
+.tlp-red    { background: var(--tlp-red);   color: var(--tlp-red-fg); }
+.tlp-amber  { background: var(--tlp-amber); color: var(--tlp-amber-fg); }
+.tlp-green  { background: var(--tlp-green); color: var(--tlp-green-fg); }
+.tlp-white,
+.tlp-clear  { background: var(--tlp-white); color: var(--tlp-white-fg); }
+table { border-collapse: collapse; width: 100%; margin: 0.5rem 0; }
+th, td { padding: 0.4rem 0.7rem; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { background: var(--th-bg); font-weight: 600; white-space: nowrap; }
+tr:nth-child(even) td { background: var(--bg-alt); }
+.meta th { width: 10rem; }
+.text { white-space: pre-wrap; margin: 0.5rem 0; }
+.publisher { color: var(--muted); font-size: 0.9rem; margin: 0.5rem 0 0; }
+.vuln { border-left: 3px solid var(--border); padding-left: 1rem; margin: 1rem 0; }
+.product-list { padding-left: 1.25rem; }
+.product-list li { margin: 0.2rem 0; }
+.footer { margin-top: 2.5rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+</style>
+</head>
+<body>
+<article>
+
+<header>
+<h1>Cybersecurity Advisory for SOEM</h1>
+<div class="tlp tlp-red">TLP:RED</div><table class="meta">
+<tr><th>Document ID</th><td><code>RRTL-260921-1</code></td></tr>
+<tr><th>Version</th><td>1</td></tr>
+<tr><th>Status</th><td>Draft</td></tr>
+<tr><th>Released</th><td>2026-09-21</td></tr>
+<tr><th>Initial release</th><td>2026-09-21</td></tr>
+<tr><th>Category</th><td><code>csaf_security_advisory</code></td></tr>
+</table>
+<p class="publisher">
+Published by <strong>RT-Labs</strong>
+ &mdash; <a href="https://rt-labs.com">https://rt-labs.com</a>(Vendor)
+</p>
+</header><section>
+<h2>Overview</h2>
+<div class="text">This advisory covers several security vulnerabilities in SOEM (Simple Open EtherCAT Master) versions up to and including 2.0.0. All vulnerabilities can be triggered by a malicious or compromised device on the same EtherCAT network.</div>
+</section>
+<section>
+<h2>Mitigation Steps</h2>
+<div class="text">Upgrade to SOEM 2.0.1 or later. All vulnerabilities are fixed in that release. As an alternative measure and to enhance security, ensure that EtherCAT devices are not connected to public networks. Devices that are not accessible to attackers, such as those on isolated networks or protected by firewalls, are at significantly reduced risk.</div>
+</section>
+
+<section>
+<h2>Vulnerabilities</h2>
+<div class="vuln">
+<h3>CVE-2026-70388 &mdash; Memory Corruption via Integer Underflow in Message Length Validation</h3>
+<div class="text">SOEM version 2.0.0 and earlier contains vulnerabilities where a malicious device on the network can send specially crafted messages that cause the master to write data outside allocated memory boundaries. The software performs arithmetic on message length values without proper validation, allowing negative or extremely large values to bypass safety checks. This can corrupt memory and potentially allow an attacker to execute arbitrary code on the master system.</div><table>
+<tr><th>CVE</th><td>CVE-2026-70388</td></tr><tr><th>CWE</th><td>CWE-191 &mdash; Integer Underflow (Wrap or Wraparound)</td></tr><tr><th>CWE</th><td>CWE-195 &mdash; Signed to Unsigned Conversion Error</td></tr><tr><th>CWE</th><td>CWE-787 &mdash; Out-of-bounds Write</td></tr></table>
+<h4>Affected Products</h4>
+<p><strong>Fixed:</strong> CSAFPID-0002</p>
+<p><strong>Known Affected:</strong> CSAFPID-0001</p>
+<h4>Scores</h4>
+<ul>
+<li><strong>CVSS 3.1:</strong> 8.8 (HIGH) &mdash; <code>CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</code></li>
+</ul>
+<h4>Remediations</h4>
+<p><strong>Vendor Fix:</strong> Upgrade to SOEM version 2.0.1 or later</p>
+<h4>Notes</h4>
+<p><strong>Technical Details:</strong> The SoE, CoE, EoE and FoE message handlers computes a payload size by subtracting a fixed header size from the slave-supplied length field using signed arithmetic. When the slave reports a length smaller than the header, the result is a large negative number. The negative value is used in a memory copy, where it is treated as a huge positive size (approximately 2^63 bytes), writing far past the destination buffer.</p>
+<p><strong>Fix:</strong> A validation step was added inside the central mailbox receive function. It now checks every incoming message&#39;s length against the per-protocol minimum and against the physical mailbox size before handing the message to any parser. A message that fails either check is discarded.</p>
+<h4>Acknowledgments</h4>
+<ul>
+<li>f0rw4rd (quellsec.dev)</li>
+<li>alosafuzz</li>
+<li>3ntr0py1337 (LeetProtect Research)</li>
+<li>Brian Willows (graith.co.uk)</li>
+<li>Eun0us (Espilon)</li>
+</ul>
+</div>
+<hr>
+<div class="vuln">
+<h3>CVE-2026-82943 &mdash; Out-of-Bounds Read via Unchecked Length Values</h3>
+<div class="text">SOEM version 2.0.0 and earlier contains vulnerabilities where a malicious device can send messages that cause the master to read data from memory locations beyond the intended buffer. The software uses length values from device responses without validating them against actual buffer sizes. An attacker can exploit this to extract up to 64KB of sensitive information from the master&#39;s memory, including data from other processes or system operations.</div><table>
+<tr><th>CVE</th><td>CVE-2026-82943</td></tr><tr><th>CWE</th><td>CWE-125 &mdash; Out-of-bounds Read</td></tr><tr><th>CWE</th><td>CWE-195 &mdash; Signed to Unsigned Conversion Error</td></tr><tr><th>CWE</th><td>CWE-200 &mdash; Exposure of Sensitive Information to an Unauthorized Actor</td></tr></table>
+<h4>Affected Products</h4>
+<p><strong>Fixed:</strong> CSAFPID-0002</p>
+<p><strong>Known Affected:</strong> CSAFPID-0001</p>
+<h4>Scores</h4>
+<ul>
+<li><strong>CVSS 3.1:</strong> 8.1 (HIGH) &mdash; <code>CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H</code></li>
+</ul>
+<h4>Remediations</h4>
+<p><strong>Vendor Fix:</strong> Upgrade to SOEM version 2.0.1 or later</p>
+<h4>Notes</h4>
+<p><strong>Technical Details:</strong> The FoE, SoE, and CoE message handlers used the slave-supplied length field as the source size for a memory copy, without checking that it fits within the actual received buffer (which is at most 1487 bytes). A slave that claims a large length while sending a short message causes the copy to read past the buffer boundary into adjacent memory, which is then returned to the caller as data. A separate bug in the SoE handler caused an unassigned internal pointer to be used as the copy source after the receive completed, reading from near address zero.</p>
+<p><strong>Fix:</strong> The central mailbox receive validation (added for CVE-2026-70388) also limits the slave-supplied length to the physical mailbox capacity, so derived copy sizes are bounded by the actual buffer. The stale pointer issue was fixed by computing the source pointer after the receive returns (patch provided by Sankalp Thakur).</p>
+<h4>Acknowledgments</h4>
+<ul>
+<li>f0rw4rd (quellsec.dev)</li>
+<li>alosafuzz</li>
+<li>3ntr0py1337 (LeetProtect Research)</li>
+<li>Brian Willows (graith.co.uk)</li>
+</ul>
+</div>
+<hr>
+<div class="vuln">
+<h3>CVE-2026-82946 &mdash; Null Pointer Dereference in Mailbox Error Handling</h3>
+<div class="text">SOEM version 2.0.0 and earlier contains a vulnerability where a malicious device can crash the master system. When the software receives an error response, it clears an internal pointer but continues processing. If another message arrives before timeout, the software attempts to use the cleared pointer, causing a crash. An attacker can trigger this with a simple sequence of two messages.</div><table>
+<tr><th>CVE</th><td>CVE-2026-82946</td></tr><tr><th>CWE</th><td>CWE-476 &mdash; NULL Pointer Dereference</td></tr><tr><th>CWE</th><td>CWE-690 &mdash; Unchecked Return Value to NULL Pointer Dereference</td></tr></table>
+<h4>Affected Products</h4>
+<p><strong>Fixed:</strong> CSAFPID-0002</p>
+<p><strong>Known Affected:</strong> CSAFPID-0001</p>
+<h4>Scores</h4>
+<ul>
+<li><strong>CVSS 3.1:</strong> 6.5 (MEDIUM) &mdash; <code>CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H</code></li>
+</ul>
+<h4>Remediations</h4>
+<p><strong>Vendor Fix:</strong> Upgrade to SOEM version 2.0.1 or later</p>
+<h4>Notes</h4>
+<p><strong>Technical Details:</strong> When the mailbox receive function gets an error-typed response, it frees the internal buffer and clears the pointer to NULL. The retry loop then continued without acquiring a new buffer first. On the next iteration it passed the NULL pointer to a receive call, causing an immediate crash.</p>
+<p><strong>Fix:</strong> The retry loop now acquires a fresh buffer before each attempt.</p>
+<h4>Acknowledgments</h4>
+<ul>
+<li>alosafuzz</li>
+</ul>
+</div>
+<hr>
+<div class="vuln">
+<h3>CVE-2026-82947 &mdash; Multiple Out-of-Bounds Reads in Frame Processing</h3>
+<div class="text">SOEM version 2.0.0 and earlier contains multiple vulnerabilities in frame processing where a malicious device can cause the master to read data outside allocated buffers. The software uses length and offset values from device messages without validating them against buffer sizes. This can cause the master to access invalid memory locations, potentially disclosing sensitive information or causing crashes.</div><table>
+<tr><th>CVE</th><td>CVE-2026-82947</td></tr><tr><th>CWE</th><td>CWE-125 &mdash; Out-of-bounds Read</td></tr><tr><th>CWE</th><td>CWE-787 &mdash; Out-of-bounds Write</td></tr><tr><th>CWE</th><td>CWE-191 &mdash; Integer Underflow (Wrap or Wraparound)</td></tr><tr><th>CWE</th><td>CWE-129 &mdash; Improper Validation of Array Index</td></tr></table>
+<h4>Affected Products</h4>
+<p><strong>Fixed:</strong> CSAFPID-0002</p>
+<p><strong>Known Affected:</strong> CSAFPID-0001</p>
+<h4>Scores</h4>
+<ul>
+<li><strong>CVSS 3.1:</strong> 7.1 (HIGH) &mdash; <code>CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:L</code></li>
+</ul>
+<h4>Remediations</h4>
+<p><strong>Vendor Fix:</strong> Upgrade to SOEM version 2.0.1 or later</p>
+<h4>Notes</h4>
+<p><strong>Technical Details:</strong> In each affected code path, a length or offset value taken from an incoming frame or slave configuration is used directly to determine how much memory to read, without first checking that the value is within the bounds of the actual buffer. In the frame receive path, the offset of the working counter is not validated to be inside the buffer boundaries. In the cyclic mailbox handlers, the size used to read from and write to the slave&#39;s mailbox is taken from a slave-supplied configuration value without limiting it to the available buffer size. A slave that reports an oversized mailbox causes the read or write to extend into adjacent memory. This affects only applications that use the cyclic mailbox mode. In the EoE recv path, timestamp handling assumes buffer is large enough to contain a timestamp.</p>
+<p><strong>Fix:</strong> Each path was corrected by validating the relevant value against the actual buffer size before use. Frames or fragments that fail validation are discarded.</p>
+<h4>Acknowledgments</h4>
+<ul>
+<li>f0rw4rd (quellsec.dev)</li>
+<li>alosafuzz</li>
+<li>Brian Willows (graith.co.uk)</li>
+</ul>
+</div>
+<hr>
+</section>
+<section>
+<h2>Products</h2>
+<table>
+<thead><tr><th>Product Name</th><th>Product ID</th><th>Path</th></tr></thead>
+<tbody><tr><td>SOEM versions prior to 2.0.1</td><td><code>CSAFPID-0001</code></td><td>RT-Labs AB &amp;gt; SOEM &amp;gt; &lt;2.0.1</td></tr>
+<tr><td>SOEM 2.0.1</td><td><code>CSAFPID-0002</code></td><td>RT-Labs AB &amp;gt; SOEM &amp;gt; 2.0.1</td></tr>
+</tbody>
+</table>
+</section>
+<section>
+<h2>References</h2>
+<ul>
+<li><a href="https://rt-labs.com/cyber-security/">RT-Labs Security Information</a></li></ul>
+</section>
+
+<section>
+<h2>Revision History</h2>
+<table>
+<thead><tr><th>Version</th><th>Date</th><th>Summary</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>2026-09-21</td><td>Initial release</td></tr>
+</tbody>
+</table>
+</section>
+
+<footer class="footer">Generated from CSAF 2.1 advisory <code>RRTL-260921-1</code>.</footer>
+
+</article>
+</body>
+</html>
