@@ -6,7 +6,7 @@ vendor_group: "Cross-vendor"
 sector: ["building"]
 transport: ["bacnet-udp"]
 project: icsfuzzer
-status: draft
+status: published
 ---
 *Part of the alosafuzz ICS protocol-guide series — written for fuzzing and
 vulnerability researchers. Defensive posture: wire format, fuzz surface, and bug

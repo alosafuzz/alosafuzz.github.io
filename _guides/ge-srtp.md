@@ -6,7 +6,7 @@ vendor_group: "GE / Emerson"
 sector: ["manufacturing"]
 transport: ["srtp"]
 project: icsfuzzer
-status: draft
+status: published
 ---
 *Part of the alosafuzz ICS protocol-guide series — written for fuzzing and
 vulnerability researchers. Defensive posture: this documents the wire format,
