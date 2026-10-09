@@ -162,19 +162,29 @@ see §9 before assuming your TLV cases reach the device.
 ## 5. Known vulnerabilities & bug classes
 
 CODESYS V3's runtime has a long advisory history in exactly these layers — name
-service, block driver (`CmpBlkDrvTcp` / `CmpBlkDrvUdp`), channel/name server, and
-tag-handling parsers. Representative clusters:
+service, block driver, channel server, and the broader SDK component set. The
+directly-relevant verified records (confirmed against NVD / CODESYS advisories /
+CISA):
 
-- The **2022 CODESYS Control runtime cluster** (CERT@VDE / CODESYS Security
-  Advisories) covering `CmpBlkDrvTcp`, `CmpChannelServer`, and `CmpNameServiceServer`
-  memory-safety and improper-input-validation bugs — multiple CVEs, several
-  remotely reachable pre-auth.
-- Earlier single-packet runtime bugs in the `CmpWebServer` / block-driver family.
+| CVE | Component | Class (CWE) | Auth | Effect |
+|---|---|---|---|---|
+| CVE-2022-22508 | `CmpNameServiceServer` | improper input-consistency validation (CWE-1288) | authenticated | crafted packet sets an invalid node name → blocks later logins *by node name* (DoS). Fixed in V3.5.18.40 (CODESYS Advisory 2022-16). |
+| CVE-2022-30791 | `CmpBlkDrvTcp` | uncontrolled resource consumption (CWE-400) | **unauthenticated** | connection-table exhaustion → runtime accepts no new TCP connections (DoS; existing connections unaffected). |
+| CVE-2022-30792 | `CmpChannelServer` | resource consumption (CWE-400) | — | blocks new channel connections (DoS). |
 
-> **Verify exact CVE IDs and affected-version ranges at publish time.** The
-> clusters above are recorded from internal research notes and should be confirmed
-> against the CODESYS Security Advisory portal and CERT@VDE before you cite specific
-> identifiers.
+Note what these 2022 bugs are: **availability / logic DoS, not memory corruption**,
+and the name-service one is *authenticated*. The real **memory-safety / RCE**
+cluster is Microsoft's **"CoDe16"** (reported to CODESYS Sept 2022, patched 2023):
+**CVE-2022-47378 through CVE-2022-47393** (15–16 CVEs) across multiple runtime
+components — e.g. CVE-2022-47378 is an invalid-address read in `CmpFiletransfer`
+from inconsistent communication requests. Microsoft chained these to **remote code
+execution** on CODESYS PLCs; fixed in **CODESYS V3.5.19.0** (some SL runtime
+families below 4.8.0.0). Most individually require authentication, but the research
+showed device authentication was frequently bypassable — so treat CoDe16 as the
+practical unauth-RCE surface for the V3 runtime.
+
+> CVE IDs and version thresholds above were verified October 2026; re-check the
+> CODESYS Security Advisory portal / CERT@VDE for later additions before citing.
 
 **Bug classes this surface rewards:**
 
