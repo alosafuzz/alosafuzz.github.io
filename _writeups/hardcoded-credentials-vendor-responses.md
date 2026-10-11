@@ -1,16 +1,17 @@
 ---
-title: "Eight hardcoded credentials, one vendor response: a Moxa disclosure story"
+title: "Hardcoded credentials, vendor responses: a disclosure story"
 date: 2026-09-24 08:00:00 -0600
 project: icsscanner
 redirect_from:
+  - /writeups/eight-hardcoded-credentials-one-vendor-response/
   - /2026/09/24/eight-hardcoded-credentials-one-vendor-response/
   - /2026/09/24/eight-hardcoded-credentials-one-vendor-response.html
 ---
-Over several ingest passes this month, where firmware images would be manually downloaded and
-then analyzed in depth, Zoe and I found eight distinct hardcoded or missing-authentication issues
-across seven Moxa product families — industrial computers, an energy meter, a managed switch
-line, a secure router, and a mobile automation router. We reported all eight to Moxa's PSIRT on
-September 19th. They acknowledged the same day. Five days later, they declined every one of them,
+Over several firmware-ingest passes this month — images manually downloaded, then analyzed in
+depth — Zoe and I found eight distinct hardcoded or missing-authentication issues across seven
+Moxa product families — industrial computers, an energy meter, a managed switch line, a secure
+router, and a mobile automation router. We reported all eight to Moxa's PSIRT on September 22nd.
+They acknowledged the same day. Two days later, they declined every one of them,
 classifying all eight as "documented, user-changeable default credentials" rather than product
 vulnerabilities.
 
@@ -18,7 +19,12 @@ For two of the eight, that's a fair characterization. For at least five, we disa
 the actual credentials out of cracked password hashes and compiled firmware tables, not out of
 any manual. This post walks through what we found, what we sent, what Moxa said back, and why we
 think the record should stay as we found it, even though we're not pushing the disagreement
-further right now.
+further right now. It's one vendor's response told in full — but not a one-off: within weeks,
+WAGO met a near-identical finding of ours — hardcoded SSH/shadow credentials in its
+PFC100/PFC200/PFC300/CC100 controllers, cracked straight out of the firmware — with the same
+"documented, user-changeable default" language. So this is really a short case study in how
+vendors draw the hardcoded-versus-default line, with Moxa's eight findings as the worked example
+and WAGO's response as the echo that makes it a pattern.
 
 ## How we found these
 
@@ -38,7 +44,7 @@ exactly two things: hardcoded credentials, and services that don't require any c
 Five of the eight didn't need any interpretation. They needed extraction:
 
 - **DA-660/DA-661/DA-660A family** (Intel IXP425-based industrial computers): a root SSH account
-  whose password hash — the literal string `gs5hdcM0NRKeI`, straight out of `/etc/shadow` —
+  whose `/etc/shadow` password hash — a DES-crypt hash, redacted here —
   cracks to `root` on the first attempt with Python's own `crypt` module. Confirmed identically
   across two independent leaked BSP source trees and two real shipped firmware images seven years
   apart (2011 and 2018).
@@ -93,12 +99,12 @@ protocols where we could build one cleanly (SSH, Telnet, a JSON login flow, and 
 and — for the findings whose exact protocol we hadn't fully reverse-engineered — a plain
 description of how to reproduce it by hand instead of a script we couldn't fully verify.
 
-Sent September 19th. Acknowledged the same day: *"We are currently reviewing the reported
+Sent September 22nd. Acknowledged the same day: *"We are currently reviewing the reported
 vulnerability and will provide updates on the progress."*
 
 ## What Moxa said
 
-Five days later, a single reply covering all eight findings at once:
+Two days later, a single reply covering all eight findings at once:
 
 > "We have carefully reviewed all eight findings. All of the reported credentials are
 > factory-default accounts that can be changed by the user. They are documented in the publicly
@@ -142,12 +148,13 @@ still active, regardless of what either side calls it.
 
 ## Takeaways
 
-A few things worth generalizing from this one:
+A few things worth generalizing from this:
 
 1. **"Can the user change it" is not the same question as "is it hardcoded."** Almost any
    password can be changed after the fact. What matters for CWE-798 is whether the *shipped
    default* required reverse engineering to discover, not whether a config screen exists to
-   change it later.
+   change it later. We have now had this same response from two separate ICS vendors — Moxa and
+   WAGO — which is what makes it worth generalizing rather than filing as a one-vendor quirk.
 2. **A CNA vendor declining to open a case isn't the same as the finding being wrong.** Moxa is a
    CVE Numbering Authority; that status covers case management, not an independent arbiter of
    whether a specific finding meets the CWE-798 bar. We'd take the same evidence back to CISA's
