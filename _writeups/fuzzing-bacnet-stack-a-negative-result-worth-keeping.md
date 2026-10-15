@@ -11,7 +11,7 @@ The dominant open-source implementation is Steve Karg's **bacnet-stack**, embedd
 a great many controllers and gateways. It is also **not on OSS-Fuzz**, and it has a
 dense cluster of decoder CVEs from 2023 through 2026 — CVE-2023-51773 (an application-data
 over-read), CVE-2026-41475 (WritePropertyMultiple decoding past the buffer), CVE-2026-41502
-(a ReadPropertyMultiple denial of service), and more — **all in the service decoders, and
+(a ReadPropertyMultiple out-of-bounds read), and more — **all in the service decoders, and
 all found by manual code audit, not fuzzing.** That last detail is the whole reason to
 show up: a surface that keeps yielding bugs to people reading code by hand is a surface a
 coverage-guided fuzzer should be able to push further on.
@@ -49,8 +49,8 @@ past the logical end is a hard crash, not a silent pass.
 - **`harness-wpm`** reproduces the exact decode loop of `h_wpm.c`'s (static, un-linkable)
   `write_property_multiple_decode`, with the device-write callback nulled out so it's a
   pure parse — the CVE-2026-41475 surface.
-- **`harness-rpm`** mirrors the request-decode loop of `h_rpm.c` — the CVE-2026-41502
-  surface.
+- **`harness-rpm`** mirrors the request-decode loop of `h_rpm.c` — the RPM
+  malformed-request DoS surface (the PR #1374 fix).
 - **`harness-bvlc`** is the wire-realistic one: it mirrors `bvlc_bbmd_disabled_handler`'s
   dispatch over the real `bvlc_decode_*` functions, then chains any extracted NPDU through
   `bacnet_npdu_decode` and on into the APDU decoder — the full BVLC → NPDU → APDU path a
@@ -64,8 +64,9 @@ the one-shot driver runs every unit in 0.00s. The slowness was never in the deco
 
 ## The campaign, and the zero
 
-Pinned at the **post-fix HEAD** (v1.7.0-rc6) on purpose — I wanted *new* bugs, not a
-re-run of the patched cluster. The numbers:
+Pinned at the **post-fix HEAD** (`bacnet-stack` master at `e3e1d1c0`, 2026-10-13 — after
+the 1.6.1 release, with the whole 2023–2026 decoder cluster patched) on purpose — I wanted
+*new* bugs, not a re-run of the patched cluster. The numbers:
 
 | Harness | ASan/UBSan execs | MSan execs | Crashes |
 |---|---|---|---|
@@ -101,11 +102,13 @@ Three for three. And then the fourth one didn't.
 
 ## The harness that was too good
 
-**rpm → CVE-2026-41502**, vulnerable commit `48ed1aef~1`: 8.3 million executions, no crash,
-no hang. The harness that mirrors the real RPM handler loop failed to reproduce the RPM
-CVE.
+**rpm → the RPM malformed-request DoS** (PR #1374, fix commit `48ed1aef`), vulnerable commit
+`48ed1aef~1`: 8.3 million executions, no crash, no hang. The harness that mirrors the real RPM
+handler loop failed to reproduce the known bug. (This DoS carries no CVE — it's the fix in
+PR #1374, distinct from the RPM off-by-one *read* CVE-2026-41502, which is a separate issue in
+`rpm_decode_object_id` fixed back in 1.4.3.)
 
-CVE-2026-41502 is not a memory-safety bug — it's a **denial of service by infinite loop**.
+This one is not a memory-safety bug — it's a **denial of service by infinite loop**.
 On the vulnerable tree, `rpm_decode_object_property` returns `0` (not an error) when the
 input is exhausted mid-parse; the handler's property loop treats "decoded zero bytes" as
 progress and spins forever. The fix makes the function return a reject instead.
@@ -118,7 +121,7 @@ it was supposed to be testing.** It could never observe the loop that is the ent
 That is the finding of this whole exercise, negative result and all: **a decode harness that
 "mirrors" a handler but quietly hardens it will silently stop reporting the handler's own DoS
 bugs.** The fix is a guard-free mirror — `harness-rpm-faithful.c`, the loop exactly as the
-handler runs it — plus libFuzzer's `-timeout`. That version reproduces CVE-2026-41502 on the
+handler runs it — plus libFuzzer's `-timeout`. That version reproduces the DoS on the
 first malformed input (a timeout artifact, stack parked in `rpm_decode_object_end`). Run on
 the patched HEAD it does 12M executions and never hangs — so the fix holds and there's no
 *new* loop DoS hiding behind my old guards either.
