@@ -116,4 +116,4 @@ a maintained open-source project running a real, multi-reporter coordinated proc
   the honest claim is the two frame-receive reads, not the score.
 
 *Built with fieldbusFuzzer — seven libFuzzer/ASan harnesses over SOEM plus a `veth` live-reproduction
-layer, published alongside this post. By Shad Malloy (alosafuzz) — alosafuzz@proton.me.*
+layer, open-sourced at [github.com/alosafuzz/fieldbusFuzzer](https://github.com/alosafuzz/fieldbusFuzzer). By Shad Malloy (alosafuzz) — alosafuzz@proton.me.*
