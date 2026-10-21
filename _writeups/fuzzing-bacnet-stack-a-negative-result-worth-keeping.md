@@ -1,8 +1,8 @@
 ---
 title: "Fuzzing bacnet-stack: a negative result worth keeping"
-date: 2026-10-13
+date: 2026-10-21
 project: fieldbusfuzzer
-published: false  # local draft — publish decision pending
+published: true
 summary: "A coverage-guided campaign against bacnet-stack's decoders — the surface behind a dense 2023–2026 CVE cluster — ran ~564 million executions under ASan/UBSan and MSan across four harnesses and found nothing new at the patched HEAD. The point of the piece isn't the zero; it's how you earn the right to report a zero: prove every harness reproduces a known CVE on the pre-patch version first — and watch one of them fail to, because a defensive guard I added made it more robust than the code it was testing."
 ---
 BACnet runs the building you're sitting in — HVAC, lighting, access control, fire and
