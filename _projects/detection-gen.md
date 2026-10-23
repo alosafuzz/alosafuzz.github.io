@@ -2,7 +2,7 @@
 title: detection-gen
 slug: detection-gen
 status: active
-order: 6
+order: 7
 summary: >-
   Generates Sigma / Splunk ESCU / Suricata detection content from icsScanner's check library — the defensive counterpart to the offensive tooling.
 ---

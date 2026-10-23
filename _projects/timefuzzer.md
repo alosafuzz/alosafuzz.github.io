@@ -2,7 +2,7 @@
 title: timeFuzzer
 slug: timefuzzer
 status: complete
-order: 3
+order: 4
 repo: https://github.com/alosafuzz/timeFuzzer
 summary: >-
   Coverage-guided fuzzing of time-synchronization protocols (linuxptp/PTP, gPTP, NTS-KE) — a cross-vertical robustness study.

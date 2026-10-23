@@ -2,7 +2,7 @@
 title: icsScanner
 slug: icsscanner
 status: active
-order: 2
+order: 3
 summary: >-
   A safety-first active discovery + assessment scanner for ICS/OT networks, with a bounded default-credential/identity-probe check library and a safety-critical execution tier.
 ---
